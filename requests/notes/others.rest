@@ -1,0 +1,14 @@
+DELETE http://localhost:3001/api/notes/647379007f540f4aba85b860
+
+###
+
+###
+PUT http://localhost:3001/api/notes/646e5f9102f0261d32d0221e
+Content-Type: application/json
+
+{
+  "content": "duhaa",
+  "important": "false"
+}
+
+###
