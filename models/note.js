@@ -12,10 +12,17 @@ const noteSchema = new mongoose.Schema({
   },
 })
 
+// Transform note schema formatting
 noteSchema.set('toJSON', {
   transform: (document, returnedObject) => {
+
+    // Transform _id field to id
     returnedObject.id = returnedObject._id.toString()
+
+    // Exclude _id field
     delete returnedObject._id
+
+    // exclude __v field
     delete returnedObject.__v
   }
 })
