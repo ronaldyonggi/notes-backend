@@ -4,10 +4,12 @@ const User = require('../models/user')
 
 // Get all notes
 notesRouter.get('/', async (request, response) => {
-  // Note.find({})
-  //   .then(notes => response.json(notes))
-  //   .catch(error => next(error))
-  const notes = await Note.find({})
+  const notes = await Note
+    .find({})
+    .populate('user', {
+      username: 1,
+      name: 1
+    })
   response.json(notes)
 })
 
