@@ -1,5 +1,6 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
+const User = require('../models/user')
 
 // Get all notes
 notesRouter.get('/', async (request, response) => {
@@ -21,13 +22,24 @@ notesRouter.get('/:id', async (request, response) => {
 notesRouter.post('/', async (request, response) => {
   const body = request.body
 
+  // Make sure the userId from the request belongs to an existing user in the DB
+  const user = await User.findById(body.userId)
+
   const newNote = new Note({
     content: body.content,
     important: body.important || false,
+    user: user.id
   })
 
   const savedNote = await newNote.save()
-  response.status(201).json(savedNote)
+
+  // Append to the user's notes array
+  user.notes = user.notes.concat(savedNote._id)
+
+  // Save the user state to DB as well
+  await user.save()
+  // Save
+  response.json(savedNote)
 
 })
 
