@@ -17,12 +17,14 @@ const unknownEndpoint = (request, response) => {
 // Error handler middleware
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message)
-  if (error.name === 'CastError') {
-    return response
-      .status(400)
-      .send({ error: 'id format is not valid!' })
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
+
+  switch (error.name) {
+    case 'CastError':
+      return response.status(400).send({ error: 'id format is not valid!' })
+    case 'ValidationError':
+      return response.status(400).json({ error: error.message })
+    case 'JsonWebTokenError':
+      return response.status(400).json({ error: error.message })
   }
 
   next(error)
