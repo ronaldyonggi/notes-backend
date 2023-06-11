@@ -25,6 +25,9 @@ const errorHandler = (error, request, response, next) => {
       return response.status(400).json({ error: error.message })
     case 'JsonWebTokenError':
       return response.status(400).json({ error: 'invalid token' })
+    case 'TokenExpiredError':
+      return response.status(401).json({ error: 'token expired' })
+
   }
 
   next(error)
