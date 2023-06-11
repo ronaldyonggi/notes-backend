@@ -2,6 +2,17 @@ const notesRouter = require('express').Router()
 const Note = require('../models/note')
 const User = require('../models/user')
 
+// Retrieve token
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+
+  // If authorization exists, replace the Bearer string with empty string
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
+
 // Get all notes
 notesRouter.get('/', async (request, response) => {
   const notes = await Note
